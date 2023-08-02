@@ -1,0 +1,33 @@
+{% extends 'forum/base.html' %} {% block content %}
+<section class="posts">
+  <ul class="posts_list">
+    {% for p in posts %}
+    <li class="posts_item">
+      <arcticle class="post">
+        <div class="post_container">
+          <div class="post-header">
+            <h2 class="post_title">{{ p }}</h2>
+          </div>
+          <div class="post-content">
+            <div class="post-content_description">
+              {% if p.content %}
+                <p class="post_desctiption">{{ p.content }}</p>
+              {% else %}
+                <p class="post_desctiption">У этого поста нету описания :(</p>
+              {% endif %}
+            </div>
+            <a class="post_link post_read" href="{% url 'post' post_id=p.id %}">Смотреть</a>
+          </div>
+          <div class="post-footer">
+            <div class="create_time">Публикация: {{ p.create_time }}</div>
+            <div class='post_author'>Автор: {{ p.author }}</div>
+            <div>Редактирование: {{ p.update_time }}</div>
+          </div>
+        </div>
+      </arcticle>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<form class="form" method="post">
+    {% csrf_token %}
+    <div>{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <div class="form_item addpage-form_item"><label class="form_label" for="{{ f.id_for_label }}">{{ f.label }}:</label><div class="form-input">{{ f }}</div></div>
+    <div>{{ f.errors }}</div>
+    {% endfor %}
+    <button class="post_link" type="submit">Сохранить</button>
+</form>
+{% endblock content %}

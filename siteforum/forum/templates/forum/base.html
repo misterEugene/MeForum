@@ -1,0 +1,83 @@
+{% load static %}{% load forum_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'forum/css/style.css' %}">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header_container">
+          <div class="logo">
+            <a href="{% url 'home' %}">MeForum</a>
+          </div>
+          <nav class="nav">
+            <ul class="header_menu">
+              <div class="close-header-menu">
+                <span></span>
+                <span></span>
+              </div>
+              {% get_header_menu as menu %}
+              {% for item in menu %}
+              {% if not request.user.is_authenticated and item.link == 'addpage' %} 
+              <li class="header_item">
+                <a class="header_link" href="{% url 'login' %}">{{ item.text }}</a>
+              </li>
+              {% else %}
+              <li class="header_item">
+                <a class="header_link" href="{% url item.link %}">{{ item.text }}</a>
+              </li>
+              {% endif %}
+              {% endfor %}
+              {% if request.user.is_authenticated %}
+              <li class="last">
+                {{ user.username }} | <a class="header_link" href="{% url 'logout' %}">Выйти</a>
+              </li>
+              {% else %}
+              <li class="header_item">
+                <a class="header_link" href="{% url 'register' %}">Регистрация</a> |
+                <a class="header_link" href="{% url 'login' %}">Войти</a>
+              </li>
+              {% endif %}
+            </ul>
+            <div class="burger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </nav>
+        </div>
+      </div>
+      
+    </header>
+    <div class="container">
+      <div class="container_outer">
+        <aside class="sidebar active">
+          <button class="sidebar-btn"><</button>
+          <h2 class="sidebar_title">Категории:</h2>
+          {% get_categories as categories%}
+          <ul class="cat_menu">
+            {% if cat_selected == 0 %}
+            <li class="sidebar_cat-active"><span>Общая</span></li>
+            {% else %}
+            <li class="cat-menu_item"><a class="sidebar_link" href="{% url 'home' %}">Общая</a></li>
+            {% endif %} {% for c in categories %} {% if cat_selected == c.pk %}
+            <li class="sidebar_cat-active"><span>{{ c }}</span></li>
+            {% else %}
+            <li class="cat-menu_item"><a class="sidebar_link" href="{% url 'category' c.slug %}">{{ c }}</a></li>
+            {% endif %} {% endfor %}
+          </ul>
+        </aside>
+        <main class="main">
+          <div class='main_container'>
+            {% block content %} {% endblock content %}
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="{% static 'forum/js/main.js' %}"></script>
+  </body>
+</html>
