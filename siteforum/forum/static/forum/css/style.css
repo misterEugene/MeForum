@@ -41,7 +41,6 @@ a {
 .container_outer {
     display: flex;
     position: relative;
-    margin: 0 -15px;
     overflow: hidden;
 }
 
@@ -116,7 +115,7 @@ button {
 }
 
 .header_container {
-    padding: 30px 0 20px;
+    padding: 30px 15px 20px;
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -282,23 +281,23 @@ button {
 }
 
 .post_link {
-    display: inline-block;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
     padding: 10px 15px;
     background-color: #5487C0;
     font-weight: 700;
     color: #fff;
     border: none;
-    text-align: center;
     font-size: 16px;
 }
 
 .post-footer_info {
-    width: 50%;
     display: flex;
 }
 
 .post-footer_control {
-    width: 50%;
     display: flex;
 }
 
@@ -356,6 +355,11 @@ button {
 /* Post styles end */
 
 /* Comment styles start */
+.comment_container {
+    background-color: #fff;
+    padding: 30px 15px 0;
+}
+
 .comment_textarea {
     width: 500px;
     resize: none;
@@ -395,7 +399,7 @@ button {
 
 .comments_item {
     background-color: #fff;
-    padding: 10px 10px 15px 20px;
+    padding: 30px 20px;
     border: 2px solid #5487C0;
     border-bottom: none;
     border-top: none;
@@ -420,16 +424,17 @@ button {
 .comment-footer {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .comment-footer_info {
-    width: 50%;
     display: flex;
 }
 
 .comment-footer_control {
-    width: 50%;
-    text-align: right;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .comment-footer_date {
@@ -519,10 +524,7 @@ button {
 /* About styles end */
 
 /* Comment-delete styles start */
-.comment_container {
-    background-color: #fff;
-    padding: 30px 20px;
-}
+
 
 .comment-delete .grade span {
     margin: 0;
@@ -603,16 +605,19 @@ button {
 }
 
 @media screen and (max-width: 640px) {
+    .comment-footer_control {
+        gap: 10px;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+
     .main_container {
         padding: 50px 10px 30px;
     }
 
-    .comment_container {
-        padding: 0;
-    }
-
     .post-footer_date {
-        flex-direction: column;
         gap: 10px;
     }
 
@@ -639,7 +644,14 @@ button {
     }
     
     .post-footer_control {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
         width: 100%;
+    }
+
+    .post-footer_control a:not(:last-child) {
+        margin-right: 0;
     }
     
     .post-footer_date {
@@ -658,6 +670,10 @@ button {
 
     .form textarea {
         width: 280px;
+    }
+
+    .comment-footer_control a:not(:last-child) {
+        margin-right: 0;
     }
 }
 /* Media styles end */

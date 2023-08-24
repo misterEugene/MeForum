@@ -23,9 +23,6 @@
               {% get_header_menu as menu %}
               {% for item in menu %}
               {% if not request.user.is_authenticated and item.link == 'addpage' %} 
-              <li class="header_item">
-                <a class="header_link" href="{% url 'login' %}">{{ item.text }}</a>
-              </li>
               {% else %}
               <li class="header_item">
                 <a class="header_link" href="{% url item.link %}">{{ item.text }}</a>
@@ -55,8 +52,8 @@
     </header>
     <div class="container">
       <div class="container_outer">
-        <aside class="sidebar active">
-          <button class="sidebar-btn"><</button>
+        <aside class="sidebar">
+          <button class="sidebar-btn">></button>
           <h2 class="sidebar_title">Категории:</h2>
           {% get_categories as categories%}
           <ul class="cat_menu">

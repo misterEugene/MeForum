@@ -1,59 +1,17 @@
 {% extends 'forum/base.html' %} 
 {% block content %}
-{% comment %} <p>Автор поста: {{ post.author }}</p>
-<h1>Заголовок поста: {{ post.title }}</h1>
-<p>Содержание поста: {{ post.content }}</p>
-<span>лайки: {{ post.likes.count }}</span>
-{% if request.user.is_authenticated %}
-<form action="{% url 'like_post' post_id=post.id %}" method="post">
-  {% csrf_token %}
-  <button type="submit">
-      {% if request.user in post.likes.all %}
-          Unlike
-      {% else %}
-          Like
-      {% endif %}
-  </button>
-</form>
-{% else %}
-<a href="{% url 'login' %}">Like</a>
-{% endif %}
-<span>дизлайки: {{ post.dislikes.count }}</span>
-{% if request.user.is_authenticated %}
-<form action="{% url 'dislike_post' post_id=post.id %}" method="post">
-  {% csrf_token %}
-  <button type="submit">
-      {% if request.user in post.dislikes.all %}
-          Undislike
-      {% else %}
-          Dislike
-      {% endif %}
-  </button>
-</form>
-{% else %}
-<a href="{% url 'login' %}">Dislike</a>
-{% endif %}
-<span>просмотры: {{ post.views.count }}</span>
-<p>Время создания: {{ post.create_time }}</p>
-<p>Время редактирование: {{ post.update_time }}</p>
-{% if request.user == post.author %}
-<a href={% url 'edit_post' post.id %}>Редактировать</a>
-<a href="{% url 'delete_post' post.id %}">Удалить пост</a>
-{% endif %} {% endcomment %}
 <arcticle class="post">
   <div class="post_container">
     <div class="post-header">
       <h2 class="post_title">{{ post }}</h2>
     </div>
+    {% if post.content %}
     <div class="post-content">
       <div class="post-content_description">
-        {% if post.content %}
-          <p class="post_desctiption">{{ post.content }}</p>
-        {% else %}
-          <p class="post_desctiption">У этого поста нету описания :(</p>
-        {% endif %}
+          <p class="post_desctiption">{{ post.content }}</p>          
       </div>
     </div>
+    {% endif %}
     <div class="post-footer">
       <div class="post-footer_info">
         <div class="grade {% if request.user in post.likes.all %}post-l-active{% endif %}">
@@ -118,58 +76,53 @@
     {% for comment in comments %}
     <li class="comments_item">
       <arcticle class="comment">
-        <div class="comment_container">
-          <div class="comment-header">
-            <div>{{ comment.author }} → {{ comment.recipient }}:</div>  
-          </div>
-          <div class="comment-content">
-            <p class="comment-content_text">{{ comment.content }}</p> 
-          </div>
-          <div class="comment-footer">
-            <div class="comment-footer_info">
-              <div class="grade {% if request.user in comment.likes.all %}comment-l-active{% endif %}">
-                {% if request.user.is_authenticated %}
-                <form action="{% url 'like_comment' comment_id=comment.id %}" method="post">
-                  {% csrf_token %}
-                  <button class="comment-button button-l" type="submit">
-                    Like
-                  </button>
-                </form>
-                {% else %}
-                <a class="comment_like" href="{% url 'login' %}">Like</a>
-                {% endif %}
-                <span> {{ comment.likes.count }}</span>
-              </div>
-              <div class="grade {% if request.user in comment.dislikes.all %}comment-l-active{% endif %}">
-                {% if request.user.is_authenticated %}
-                <form action="{% url 'dislike_comment' comment_id=comment.id %}" method="post">
-                  {% csrf_token %}
-                  <button class="comment-button button-l" type="submit">
-                    Dislike
-                  </button>
-                </form>
-                {% else %}
-                <a class="comment_dislike" href="{% url 'login' %}">Dislike</a>
-                {% endif %}
-                <span> {{ comment.dislikes.count }}</span>
-              </div>
-            </div>
-            {% if request.user == comment.author %}
-            <div class="comment-footer_control">
-              {% if request.user == comment.author %}
-              <a class="post_link" href="{% url 'edit_comment' comment_id=comment.id %}">Редактировать</a>
-              <a class="post_link" href="{% url 'delete_comment' comment_id=comment.id post_id=post.id %}">Удалить комментарий</a>
+        <div class="comment-header">
+          <div>{{ comment.author }} → {{ comment.recipient }}:</div>  
+        </div>
+        <div class="comment-content">
+          <p class="comment-content_text">{{ comment.content }}</p> 
+        </div>
+        <div class="comment-footer">
+          <div class="comment-footer_info">
+            <div class="grade {% if request.user in comment.likes.all %}comment-l-active{% endif %}">
+              {% if request.user.is_authenticated %}
+              <form action="{% url 'like_comment' comment_id=comment.id %}" method="post">
+                {% csrf_token %}
+                <button class="comment-button button-l" type="submit">
+                  Like 
+                </button>
+              </form>
+              {% else %}
+              <a class="comment_like" href="{% url 'login' %}">Like</a>
               {% endif %}
+              <span>{{ comment.likes.count }}</span>
             </div>
-            {% endif %}
-            <div class="comment-footer_date">
-              <div>Публикация: {{ comment.create_time }}</div>
-              <div>Редактирование: {{ comment.update_time }}</div>
+            <div class="grade {% if request.user in comment.dislikes.all %}comment-l-active{% endif %}">
+              {% if request.user.is_authenticated %}
+              <form action="{% url 'dislike_comment' comment_id=comment.id %}" method="post">
+                {% csrf_token %}
+                <button class="comment-button button-l" type="submit">
+                  Dislike
+                </button>
+              </form>
+              {% else %}
+              <a class="comment_dislike" href="{% url 'login' %}">Dislike</a>
+              {% endif %}
+              <span> {{ comment.dislikes.count }}</span>
             </div>
-            
           </div>
-          
-          
+          {% if request.user == comment.author %}
+          <div class="comment-footer_control">
+            {% if request.user == comment.author %}
+            <a class="post_link" href="{% url 'edit_comment' comment_id=comment.id %}">Редактировать</a>
+            <a class="post_link" href="{% url 'delete_comment' comment_id=comment.id post_id=post.id %}">Удалить комментарий</a>
+            {% endif %}
+          </div>
+          {% endif %}
+          <div class="comment-footer_date">
+            <div>Публикация: {{ comment.create_time }}</div>
+            <div>Редактирование: {{ comment.update_time }}</div>
+          </div>
         </div>
       </arcticle >
     </li>

@@ -19,7 +19,7 @@ menu = [
 
 def index(request):
     cats = Categories.objects.all()
-    posts = Posts.objects.filter(is_published=True)
+    posts = Posts.objects.filter(is_published=True).order_by('-create_time')
 
     context = {
         "title": "Главная страница",
@@ -33,7 +33,7 @@ def index(request):
 def category(request, cat_slug):
     categories = Categories.objects.all()
     c = categories.get(slug=cat_slug)
-    posts = Posts.objects.filter(cat_id=c.pk, is_published=True)
+    posts = Posts.objects.filter(cat_id=c.pk, is_published=True).order_by('-create_time')
 
     context = {
         "title": "Страница категории",
@@ -212,7 +212,7 @@ def dislike_comment(request, comment_id):
 def delete_post(request, post_id):
     try:
         post = Posts.objects.get(pk=post_id)
-    except:
+    except Posts.DoesNotExist:
         pass
 
     if request.method == "POST":

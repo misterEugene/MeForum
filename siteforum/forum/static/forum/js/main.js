@@ -3,7 +3,7 @@ sidebar = document.querySelector('.sidebar')
 sidebarBtn = document.querySelector('.sidebar-btn')
 console.log(sidebar)
 console.log(sidebarBtn)
-content = '>'
+content = '<'
 
 sidebarBtn.addEventListener('click', sidebarToggleActive)
 

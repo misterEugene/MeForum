@@ -9,13 +9,11 @@
             <h2 class="post_title">{{ p }}</h2>
           </div>
           <div class="post-content">
+            {% if p.content %}
             <div class="post-content_description">
-              {% if p.content %}
                 <p class="post_desctiption">{{ p.content }}</p>
-              {% else %}
-                <p class="post_desctiption">У этого поста нету описания :(</p>
-              {% endif %}
             </div>
+            {% endif %}
             <a class="post_link post_read" href="{% url 'post' post_id=p.id %}">Смотреть</a>
           </div>
           <div class="post-footer">
